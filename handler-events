@@ -1,0 +1,7 @@
+module.exports = {
+  name: 'nombre del evento',
+  once: true/false, // indica si el evento se debe ejecutar una vez o varias veces
+  async execute(client, args) {
+    // código que se ejecutará cuando ocurra el evento
+  },
+};

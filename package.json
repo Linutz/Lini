@@ -11,7 +11,6 @@
   "license": "ISC",
   "dependencies": {
     "@types/node": "^18.0.6",
-    "canvas-constructor": "^7.0.0",
     "discord.js": "^13.15.0",
     "express": "^4.18.2",
     "node-fetch": "^3.2.6"

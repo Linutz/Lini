@@ -1,20 +1,22 @@
-const Discord = require("discord.js")
+const Discord = require("discord.js");
 const { Client, Intents } = require('discord.js');
 const client = new Client({ intents: "32767" });
+const path = require('path');
 
 const keepAlive = require('./server.js');
 const express = require("express")().get("/", (req,res)=>res.send("Bot en Linea!")).listen(3000)
+
 const fs = require('fs');
 const { Collection } = require('discord.js');
-
-let { readdirSync } = require('fs') 
-
+let { readdirSync } = require("fs");
+  
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./comandos').filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
   const command = require(`./comandos/${file}`);
   client.commands.set(command.name, command);
+  console.log(`Comando cargado: ${command.name}`);
 }
 
 client.on('messageCreate', (message) => {
@@ -36,6 +38,19 @@ if(!message.content.startsWith(prefix)) return;
 
 })
 
+const eventFiles = readdirSync('./eventos').filter(file => file.endsWith('.js'));
+
+for (const file of eventFiles) {
+  const event = require(`./eventos/${file}`);
+
+  if (event.once) {
+    client.once(event.name, (...args) => event.execute(...args, client));
+  } else {
+    client.on(event.name, (...args) => event.execute(...args, client));
+  }
+
+  console.log(`Evento cargado: ${event.name}`);
+}
 
 const mySecret = process.env['TOKEN']
 client.login(mySecret);
