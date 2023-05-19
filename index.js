@@ -3,8 +3,25 @@ const { Client, Intents } = require('discord.js');
 const client = new Client({ intents: "32767" });
 const path = require('path');
 
+const mongoose = require('mongoose');
+
+mongoose.connect(process.env['MONGODB'], { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log('Database conectado ✔️.');
+  })
+  .catch((error) => {
+    console.error('Error al conectar a la base de datos:', error);
+  });
+    
+
+
 const keepAlive = require('./server.js');
 const express = require("express")().get("/", (req,res)=>res.send("Bot en Linea!")).listen(3000)
+
+process.on('unhandledRejection', error => {
+  console.error('Unhandled promise rejection:', error);
+});
+
 
 const fs = require('fs');
 const { Collection } = require('discord.js');
@@ -21,7 +38,7 @@ for (const file of commandFiles) {
 
 client.on('messageCreate', (message) => {
 
-  let prefix = '!'
+  let prefix = '.'
   
   if(message.author.bot) return;
 
