@@ -38,7 +38,7 @@ for (const file of commandFiles) {
 
 client.on('messageCreate', (message) => {
 
-  let prefix = '.'
+  let prefix = '!'
   
   if(message.author.bot) return;
 
@@ -54,6 +54,7 @@ if(!message.content.startsWith(prefix)) return;
   }
 
 })
+
 
 const eventFiles = readdirSync('./eventos').filter(file => file.endsWith('.js'));
 
